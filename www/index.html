@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Znote</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="app-header">
+  <div class="brand-area">
+    <button id="btn-toggle-sidebar" class="icon-btn nav-toggle" type="button"
+      title="收起侧栏 (Ctrl+B)" aria-label="收起侧栏" aria-expanded="true">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+        <path d="M9 4v16"></path>
+      </svg>
+    </button>
+    <div class="brand"><span class="brand-mark">Z</span><span>Znote</span></div>
+  </div>
+  <div class="search">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="11" cy="11" r="6.5"></circle>
+      <path d="m16 16 4 4"></path>
+    </svg>
+    <input id="search" type="search" placeholder="搜索全部笔记..." autocomplete="off" aria-label="搜索全部笔记">
+    <kbd>Ctrl K</kbd>
+  </div>
+  <button id="btn-shutdown" class="head-btn" type="button" title="退出 Znote（未保存内容会自动写入）">退出</button>
+</header>
+
+<div class="layout" id="layout">
+  <aside id="sidebar">
+    <section id="modules" class="sidebar-section modules-section" aria-label="模块">
+      <div class="panel-head">
+        <div class="panel-heading">
+          <span>模块</span>
+          <span id="module-count" class="section-count"></span>
+        </div>
+        <div class="head-actions">
+          <select id="module-sort" title="模块排序方式" aria-label="模块排序方式">
+            <option value="manual">手动</option>
+            <option value="name">按名称</option>
+          </select>
+          <button id="btn-add-module" class="icon-btn add-btn" type="button" title="新建模块" aria-label="新建模块">+</button>
+        </div>
+      </div>
+      <ul id="module-list"></ul>
+    </section>
+
+    <section id="notes-pane" class="sidebar-section notes-section" aria-label="笔记列表">
+      <div class="panel-head">
+        <div class="panel-heading">
+          <span id="notes-title">笔记</span>
+          <span id="note-count" class="section-count"></span>
+        </div>
+        <div class="head-actions">
+          <select id="note-sort" title="笔记排序方式" aria-label="笔记排序方式">
+            <option value="manual">手动</option>
+            <option value="time">按时间</option>
+            <option value="name">按名称</option>
+          </select>
+          <button id="btn-new-note" class="new-note-btn" type="button" title="新建笔记 (Ctrl+N)">
+            <span class="plus">+</span><span>新建</span>
+          </button>
+        </div>
+      </div>
+      <ul id="note-list"><li class="empty">选择一个模块查看笔记</li></ul>
+    </section>
+
+    <div class="data-path" title="所有数据都存于该文件夹，直接复制即可备份">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 7.5 5 4h5l2 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"></path>
+      </svg>
+      <span>本地数据 · data/</span>
+    </div>
+  </aside>
+
+  <main id="editor-pane">
+    <div class="editor-toolbar">
+      <div class="view-switch" role="group" aria-label="内容视图">
+        <button id="btn-edit-mode" class="active" type="button" aria-pressed="true" title="编辑 (Ctrl+E)">编辑</button>
+        <button id="btn-preview-mode" type="button" aria-pressed="false" title="预览 (Ctrl+E)">预览</button>
+      </div>
+      <div class="editor-actions">
+        <span id="save-state" class="save-state" aria-live="polite"></span>
+        <button id="btn-upload" class="tool-btn" type="button" title="插入图片">图片</button>
+        <button id="btn-save" class="tool-btn" type="button" title="保存 (Ctrl+S)">保存</button>
+        <button id="btn-delete" class="tool-btn danger" type="button" title="删除笔记">删除</button>
+      </div>
+    </div>
+    <div class="title-row">
+      <input id="note-title" placeholder="输入笔记标题" spellcheck="false" aria-label="笔记标题">
+    </div>
+    <div class="editor-body">
+      <textarea id="note-body" placeholder="开始记录...&#10;支持 Markdown 语法，可拖拽或粘贴图片" aria-label="笔记内容"></textarea>
+      <div id="note-preview" class="markdown-body" hidden></div>
+    </div>
+    <input type="file" id="file-input" accept="image/*" multiple hidden>
+  </main>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<div id="shutdown-overlay" class="overlay">
+  <div class="overlay-box">
+    <h2>服务已关闭</h2>
+    <p>Znote 本地服务已停止，笔记已全部保存在 data 文件夹中。<br>需要再次使用时，双击 start.bat 即可。</p>
+    <button onclick="window.close()">关闭页面</button>
+  </div>
+</div>
+
+<script src="vendor/marked.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
